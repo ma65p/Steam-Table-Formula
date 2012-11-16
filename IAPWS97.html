@@ -1,0 +1,684 @@
+<html>
+<head>
+  <title>IAPWS97.html</title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+<pre>
+<font color="4444FF">&lt;</font>!DOCTYPE HTML PUBLIC <font color="#008000">&quot;-//IETF//DTD HTML//EN&quot;</font><font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font>html<font color="4444FF">&gt;</font><font color="4444FF">&lt;</font>head<font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font>meta http-equiv<font color="4444FF">=</font><font color="#008000">&quot;Content-Type&quot;</font> CONTENT<font color="4444FF">=</font><font color="#008000">&quot;text/html; charset=iso-8859-1&quot;</font><font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font>meta <font color="#2040a0"><strong>name</strong></font><font color="4444FF">=</font><font color="#008000">&quot;Author&quot;</font> CONTENT<font color="4444FF">=</font><font color="#008000">&quot;Leon Kos&quot;</font><font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font>meta <font color="#2040a0"><strong>name</strong></font><font color="4444FF">=</font><font color="#008000">&quot;Keywords&quot;</font> CONTENT<font color="4444FF">=</font><font color="#008000">&quot;IAPWS IF-74, properties of water and steam, javascript&quot;</font><font color="4444FF">&gt;</font>
+
+<font color="4444FF">&lt;</font><font color="#2040a0"><strong>title</strong></font><font color="4444FF">&gt;</font>IAPWS IF-<font color="#FF0000">97</font><font color="4444FF">&lt;</font><font color="4444FF">/</font><font color="#2040a0"><strong>title</strong></font><font color="4444FF">&gt;</font>
+
+<font color="4444FF">&lt;</font>script language<font color="4444FF">=</font>javascript<font color="4444FF">&gt;</font>
+<font color="#444444">// Copyright 2001, Leon Kos</font>
+<font color="#444444">// All properties in SI units</font>
+
+<strong>var</strong> R <font color="4444FF">=</font> <font color="#FF0000">0.461526e3</font><font color="4444FF">;</font>      <font color="#444444">// J kg^-1 K^-1</font>
+
+<strong>function<font color="ff0000"> Equation</font><font color="2040a0">(T_reducing, p_reducing, n, J, I)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>this</strong>.T_reducing <font color="4444FF">=</font> T_reducing<font color="4444FF">;</font>
+  <strong>this</strong>.p_reducing <font color="4444FF">=</font> p_reducing<font color="4444FF">;</font> <font color="#444444">// pressure or density</font>
+  <strong>this</strong>.n <font color="4444FF">=</font> n<font color="4444FF">;</font>          <font color="#444444">// coefficients</font>
+  <strong>this</strong>.J <font color="4444FF">=</font> J <font color="4444FF">|</font><font color="4444FF">|</font> null<font color="4444FF">;</font>  <font color="#444444">// exponents J</font>
+  <strong>this</strong>.I <font color="4444FF">=</font> I <font color="4444FF">|</font><font color="4444FF">|</font> null<font color="4444FF">;</font>  <font color="#444444">// exponents I</font>
+  <strong>this</strong>.tau <font color="4444FF">=</font> function (temperature)
+  <font color="4444FF"><strong>{</strong></font> <strong>return</strong> <strong>this</strong>.T_reducing<font color="4444FF">/</font>temperature<font color="4444FF">;</font> <font color="4444FF"><strong>}</strong></font>
+  <strong>this</strong>.pi <font color="4444FF">=</font>  function (pressure)
+  <font color="4444FF"><strong>{</strong></font><strong>return</strong> pressure<font color="4444FF">/</font><strong>this</strong>.p_reducing<font color="4444FF">;</font> <font color="4444FF"><strong>}</strong></font>
+  <strong>this</strong>.delta <font color="4444FF">=</font> function (density)
+  <font color="4444FF"><strong>{</strong></font><strong>return</strong> density<font color="4444FF">/</font><strong>this</strong>.p_reducing<font color="4444FF">;</font> <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<font color="#444444">// EQUATION DATA</font>
+
+<strong>var</strong> equation_3_1 <font color="4444FF">=</font> <strong>new</strong> Equation( <font color="#FF0000">1386</font>, <font color="#FF0000">16.53e6</font>, <font color="#444444">// Region 1, basic equation 3.1</font>
+  [ <font color="#FF0000">0.14632971213167</font>,     -<font color="#FF0000">0.84548187169114</font>,    -<font color="#FF0000">0.37563603672040e1</font>,
+    <font color="#FF0000">0.33855169168385e1</font>,   -<font color="#FF0000">0.95791963387872</font>,     <font color="#FF0000">0.15772038513228</font>,
+   -<font color="#FF0000">0.16616417199501e-1</font>,   <font color="#FF0000">0.81214629983568e-3</font>,  <font color="#FF0000">0.28319080123804e-3</font>,
+   -<font color="#FF0000">0.60706301565874e-3</font>,  -<font color="#FF0000">0.18990068218419e-1</font>, -<font color="#FF0000">0.32529748770505e-1</font>,
+   -<font color="#FF0000">0.21841717175414e-1</font>,  -<font color="#FF0000">0.52838357969930e-4</font>, -<font color="#FF0000">0.47184321073267e-3</font>,
+   -<font color="#FF0000">0.30001780793026e-3</font>,   <font color="#FF0000">0.47661393906987e-4</font>, -<font color="#FF0000">0.44141845330846e-5</font>,
+   -<font color="#FF0000">0.72694996297594e-15</font>, -<font color="#FF0000">0.31679644845054e-4</font>, -<font color="#FF0000">0.28270797985312e-5</font>,
+   -<font color="#FF0000">0.85205128120103e-9</font>,  -<font color="#FF0000">0.22425281908000e-5</font>, -<font color="#FF0000">0.65171222895601e-6</font>,
+   -<font color="#FF0000">0.14341729937924e-12</font>, -<font color="#FF0000">0.40516996860117e-6</font>, -<font color="#FF0000">0.12734301741641e-8</font>,
+   -<font color="#FF0000">0.17424871230634e-9</font>,  -<font color="#FF0000">0.68762131295531e-18</font>, <font color="#FF0000">0.14478307828521e-19</font>,
+    <font color="#FF0000">0.26335781662795e-22</font>, -<font color="#FF0000">0.11947622640071e-22</font>, <font color="#FF0000">0.18228094581404e-23</font>,
+   -<font color="#FF0000">0.93537087292458e-25</font> ],
+  [-<font color="#FF0000">2</font>, -<font color="#FF0000">1</font>, <font color="#FF0000">0</font>, <font color="#FF0000">1</font>, <font color="#FF0000">2</font>, <font color="#FF0000">3</font>, <font color="#FF0000">4</font>, <font color="#FF0000">5</font>, -<font color="#FF0000">9</font>, -<font color="#FF0000">7</font>, -<font color="#FF0000">1</font>, <font color="#FF0000">0</font>, <font color="#FF0000">1</font>, <font color="#FF0000">3</font>, -<font color="#FF0000">3</font>, <font color="#FF0000">0</font>, <font color="#FF0000">1</font>, <font color="#FF0000">3</font>, <font color="#FF0000">17</font>,
+  -<font color="#FF0000">4</font>, <font color="#FF0000">0</font>, <font color="#FF0000">6</font>, -<font color="#FF0000">5</font>, -<font color="#FF0000">2</font>, <font color="#FF0000">10</font>, -<font color="#FF0000">8</font>, -<font color="#FF0000">11</font>, -<font color="#FF0000">6</font>, -<font color="#FF0000">29</font>, -<font color="#FF0000">31</font>, -<font color="#FF0000">38</font>, -<font color="#FF0000">39</font>, -<font color="#FF0000">40</font>, -<font color="#FF0000">41</font>],
+  [<font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">3</font>, <font color="#FF0000">3</font>, <font color="#FF0000">3</font>,
+   <font color="#FF0000">4</font>, <font color="#FF0000">4</font>, <font color="#FF0000">4</font>, <font color="#FF0000">5</font>, <font color="#FF0000">8</font>, <font color="#FF0000">8</font>, <font color="#FF0000">21</font>, <font color="#FF0000">23</font>, <font color="#FF0000">29</font>, <font color="#FF0000">30</font>, <font color="#FF0000">31</font>, <font color="#FF0000">32</font>]
+  )<font color="4444FF">;</font>
+
+<font color="#444444">// Region 2</font>
+
+<strong>var</strong> equation_3_9 <font color="4444FF">=</font> <strong>new</strong> Equation ( <font color="#FF0000">540</font>, <font color="#FF0000">1e6</font>, <font color="#444444">// Region 2, equation 3.9</font>
+ [ -<font color="#FF0000">0.96927686500217E+01</font>,  <font color="#FF0000">0.10086655968018E+02</font>, -<font color="#FF0000">0.56087911283020E-02</font>,
+    <font color="#FF0000">0.71452738081455E-01</font>, -<font color="#FF0000">0.40710498223928E+00</font>,  <font color="#FF0000">0.14240819171444E+01</font>, 
+   -<font color="#FF0000">0.43839511319450E+01</font>, -<font color="#FF0000">0.28408632460772E+00</font>,  <font color="#FF0000">0.21268463753307E-01</font>],
+ [<font color="#FF0000">0</font>, <font color="#FF0000">1</font>, -<font color="#FF0000">5</font>, -<font color="#FF0000">4</font>, -<font color="#FF0000">3</font>, -<font color="#FF0000">2</font>, -<font color="#FF0000">1</font>, <font color="#FF0000">2</font>,  <font color="#FF0000">3</font>])<font color="4444FF">;</font>
+
+<strong>var</strong> equation_3_10 <font color="4444FF">=</font> <strong>new</strong> Equation ( <font color="#FF0000">540</font>, <font color="#FF0000">1e6</font>, <font color="#444444">// Region 2, eq 3.10, residual</font>
+ [ -<font color="#FF0000">0.17731742473213E-02</font>,  -<font color="#FF0000">0.17834862292358E-01</font>,  -<font color="#FF0000">0.45996013696365E-01</font>, 
+   -<font color="#FF0000">0.57581259083432E-01</font>,  -<font color="#FF0000">0.50325278727930E-01</font>,  -<font color="#FF0000">0.33032641670203E-04</font>, 
+   -<font color="#FF0000">0.18948987516315E-03</font>,  -<font color="#FF0000">0.39392777243355E-02</font>,  -<font color="#FF0000">0.43797295650573E-01</font>, 
+   -<font color="#FF0000">0.26674547914087E-04</font>,   <font color="#FF0000">0.20481737692309E-07</font>,   <font color="#FF0000">0.43870667284435E-06</font>, 
+   -<font color="#FF0000">0.32277677238570E-04</font>,  -<font color="#FF0000">0.15033924542148E-02</font>,  -<font color="#FF0000">0.40668253562649E-01</font>, 
+   -<font color="#FF0000">0.78847309559367E-09</font>,   <font color="#FF0000">0.12790717852285E-07</font>,   <font color="#FF0000">0.48225372718507E-06</font>, 
+    <font color="#FF0000">0.22922076337661E-05</font>,  -<font color="#FF0000">0.16714766451061E-10</font>,  -<font color="#FF0000">0.21171472321355E-02</font>, 
+   -<font color="#FF0000">0.23895741934104E+02</font>,  -<font color="#FF0000">0.59059564324270E-17</font>,  -<font color="#FF0000">0.12621808899101E-05</font>, 
+   -<font color="#FF0000">0.38946842435739E-01</font>,   <font color="#FF0000">0.11256211360459E-10</font>,  -<font color="#FF0000">0.82311340897998E+01</font>, 
+    <font color="#FF0000">0.19809712802088E-07</font>,   <font color="#FF0000">0.10406965210174E-18</font>,  -<font color="#FF0000">0.10234747095929E-12</font>, 
+   -<font color="#FF0000">0.10018179379511E-08</font>,  -<font color="#FF0000">0.80882908646985E-10</font>,   <font color="#FF0000">0.10693031879409E+00</font>, 
+   -<font color="#FF0000">0.33662250574171E+00</font>,   <font color="#FF0000">0.89185845355421E-24</font>,   <font color="#FF0000">0.30629316876232E-12</font>, 
+   -<font color="#FF0000">0.42002467698208E-05</font>,  -<font color="#FF0000">0.59056029685639E-25</font>,   <font color="#FF0000">0.37826947613457E-05</font>, 
+   -<font color="#FF0000">0.12768608934681E-14</font>,   <font color="#FF0000">0.73087610595061E-28</font>,   <font color="#FF0000">0.55414715350778E-16</font>, 
+   -<font color="#FF0000">0.94369707241210E-06</font> ],
+ [<font color="#FF0000">0</font>, <font color="#FF0000">1</font>, <font color="#FF0000">2</font>, <font color="#FF0000">3</font>, <font color="#FF0000">6</font>, <font color="#FF0000">1</font>, <font color="#FF0000">2</font>, <font color="#FF0000">4</font>, <font color="#FF0000">7</font>, <font color="#FF0000">36</font>, <font color="#FF0000">0</font>, <font color="#FF0000">1</font>, <font color="#FF0000">3</font>, <font color="#FF0000">6</font>, <font color="#FF0000">35</font>, <font color="#FF0000">1</font>, <font color="#FF0000">2</font>, <font color="#FF0000">3</font>, <font color="#FF0000">7</font>, <font color="#FF0000">3</font>, <font color="#FF0000">16</font>, <font color="#FF0000">35</font>, <font color="#FF0000">0</font>, <font color="#FF0000">11</font>,
+ <font color="#FF0000">25</font>, <font color="#FF0000">8</font>, <font color="#FF0000">36</font>, <font color="#FF0000">13</font>, <font color="#FF0000">4</font>, <font color="#FF0000">10</font>, <font color="#FF0000">14</font>, <font color="#FF0000">29</font>, <font color="#FF0000">50</font>, <font color="#FF0000">57</font>, <font color="#FF0000">20</font>, <font color="#FF0000">35</font>, <font color="#FF0000">48</font>, <font color="#FF0000">21</font>, <font color="#FF0000">53</font>, <font color="#FF0000">39</font>, <font color="#FF0000">26</font>, <font color="#FF0000">40</font>, <font color="#FF0000">58</font> ],
+ [<font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">3</font>, <font color="#FF0000">3</font>, <font color="#FF0000">3</font>, <font color="#FF0000">3</font>, <font color="#FF0000">3</font>, <font color="#FF0000">4</font>, <font color="#FF0000">4</font>, <font color="#FF0000">4</font>, <font color="#FF0000">5</font>, <font color="#FF0000">6</font>, <font color="#FF0000">6</font>, <font color="#FF0000">6</font>, <font color="#FF0000">7</font>, <font color="#FF0000">7</font>, <font color="#FF0000">7</font>,
+   <font color="#FF0000">8</font>, <font color="#FF0000">8</font>, <font color="#FF0000">9</font>, <font color="#FF0000">10</font>, <font color="#FF0000">10</font>, <font color="#FF0000">10</font>, <font color="#FF0000">16</font>, <font color="#FF0000">16</font>, <font color="#FF0000">18</font>, <font color="#FF0000">20</font>, <font color="#FF0000">20</font>, <font color="#FF0000">20</font>, <font color="#FF0000">21</font>, <font color="#FF0000">22</font>, <font color="#FF0000">23</font>, <font color="#FF0000">24</font>, <font color="#FF0000">24</font>, <font color="#FF0000">24</font> ]
+)<font color="4444FF">;</font>
+
+<font color="#444444">// Region 3, basic equation 3.21 , note that second parameter is density</font>
+<strong>var</strong> equation_3_21 <font color="4444FF">=</font> <strong>new</strong> Equation (<font color="#FF0000">647.096</font>, <font color="#FF0000">322</font>, 
+ [ <font color="#FF0000">0.10658070028513E+01</font>, -<font color="#FF0000">0.15732845290239E+02</font>,  <font color="#FF0000">0.20944396974307E+02</font>,
+  -<font color="#FF0000">0.76867707878716E+01</font>,  <font color="#FF0000">0.26185947787954E+01</font>, -<font color="#FF0000">0.28080781148620E+01</font>,
+   <font color="#FF0000">0.12053369696517E+01</font>, -<font color="#FF0000">0.84566812812502E-02</font>, -<font color="#FF0000">0.12654315477714E+01</font>,
+  -<font color="#FF0000">0.11524407806681E+01</font>,  <font color="#FF0000">0.88521043984318E+00</font>, -<font color="#FF0000">0.64207765181607E+00</font>,
+   <font color="#FF0000">0.38493460186671E+00</font>, -<font color="#FF0000">0.85214708824206E+00</font>,  <font color="#FF0000">0.48972281541877E+01</font>,
+  -<font color="#FF0000">0.30502617256965E+01</font>,  <font color="#FF0000">0.39420536879154E-01</font>,  <font color="#FF0000">0.12558408424308E+00</font>,
+  -<font color="#FF0000">0.27999329698710E+00</font>,  <font color="#FF0000">0.13899799569460E+01</font>, -<font color="#FF0000">0.20189915023570E+01</font>,
+  -<font color="#FF0000">0.82147637173963E-02</font>, -<font color="#FF0000">0.47596035734923E+00</font>,  <font color="#FF0000">0.43984074473500E-01</font>,
+  -<font color="#FF0000">0.44476435428739E+00</font>,  <font color="#FF0000">0.90572070719733E+00</font>,  <font color="#FF0000">0.70522450087967E+00</font>,
+   <font color="#FF0000">0.10770512626332E+00</font>, -<font color="#FF0000">0.32913623258954E+00</font>, -<font color="#FF0000">0.50871062041158E+00</font>,
+  -<font color="#FF0000">0.22175400873096E-01</font>,  <font color="#FF0000">0.94260751665092E-01</font>,  <font color="#FF0000">0.16436278447961E+00</font>,
+  -<font color="#FF0000">0.13503372241348E-01</font>, -<font color="#FF0000">0.14834345352472E-01</font>,  <font color="#FF0000">0.57922953628084E-03</font>,
+   <font color="#FF0000">0.32308904703711E-02</font>,  <font color="#FF0000">0.80964802996215E-04</font>, -<font color="#FF0000">0.16557679795037E-03</font>,
+  -<font color="#FF0000">0.44923899061815E-04</font> ],
+  [<font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">1</font>, <font color="#FF0000">2</font>, <font color="#FF0000">7</font>, <font color="#FF0000">10</font>, <font color="#FF0000">12</font>, <font color="#FF0000">23</font>, <font color="#FF0000">2</font>, <font color="#FF0000">6</font>, <font color="#FF0000">15</font>, <font color="#FF0000">17</font>, <font color="#FF0000">0</font>, <font color="#FF0000">2</font>, <font color="#FF0000">6</font>, <font color="#FF0000">7</font>, <font color="#FF0000">22</font>, <font color="#FF0000">26</font>, <font color="#FF0000">0</font>, <font color="#FF0000">2</font>, <font color="#FF0000">4</font>,
+  <font color="#FF0000">16</font>, <font color="#FF0000">26</font>, <font color="#FF0000">0</font>, <font color="#FF0000">2</font>, <font color="#FF0000">4</font>, <font color="#FF0000">26</font>, <font color="#FF0000">1</font>, <font color="#FF0000">3</font>, <font color="#FF0000">26</font>, <font color="#FF0000">0</font>, <font color="#FF0000">2</font>, <font color="#FF0000">26</font>, <font color="#FF0000">2</font>, <font color="#FF0000">26</font>, <font color="#FF0000">2</font>, <font color="#FF0000">26</font>, <font color="#FF0000">0</font>, <font color="#FF0000">1</font>, <font color="#FF0000">26</font>],
+  [<font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">0</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">1</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">2</font>, <font color="#FF0000">3</font>, <font color="#FF0000">3</font>, <font color="#FF0000">3</font>, <font color="#FF0000">3</font>, <font color="#FF0000">3</font>,
+   <font color="#FF0000">4</font>, <font color="#FF0000">4</font>, <font color="#FF0000">4</font>, <font color="#FF0000">4</font>, <font color="#FF0000">5</font>, <font color="#FF0000">5</font>, <font color="#FF0000">5</font>, <font color="#FF0000">6</font>, <font color="#FF0000">6</font>, <font color="#FF0000">6</font>, <font color="#FF0000">7</font>, <font color="#FF0000">8</font>, <font color="#FF0000">9</font>, <font color="#FF0000">9</font>, <font color="#FF0000">10</font>, <font color="#FF0000">10</font>, <font color="#FF0000">11</font>]
+)<font color="4444FF">;</font>
+
+
+<font color="#444444">// REGION 1</font>
+<font color="#444444">// specific volume</font>
+<strong>function<font color="ff0000"> v_1</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dg_pi <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  
+  <strong>with</strong> (equation_3_1)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">34</font><font color="4444FF">;</font> i++)
+        dg_pi +<font color="4444FF">=</font> -n[i] * I[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(<font color="#FF0000">7.1</font> - pi(p), I[i] - <font color="#FF0000">1</font>)
+          * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">1.222</font>, J[i])<font color="4444FF">;</font>
+      
+      <strong>return</strong> pi(p) * dg_pi * R * T <font color="4444FF">/</font> p<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<font color="#444444">// specific internal energy</font>
+<strong>function<font color="ff0000"> u_1</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dg_pi <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> dg_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> ( equation_3_1 )
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">34</font><font color="4444FF">;</font> i++)
+        <font color="4444FF"><strong>{</strong></font>
+          dg_pi +<font color="4444FF">=</font> -n[i] * I[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(<font color="#FF0000">7.1</font> - pi(p), I[i] - <font color="#FF0000">1</font>)
+            * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">1.222</font>, J[i])<font color="4444FF">;</font>
+          dg_tau +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>( <font color="#FF0000">7.1</font> - pi(p), I[i])
+            * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">1.222</font>, J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <strong>return</strong> R * T * (tau(T) * dg_tau - pi(p) * dg_pi)<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+
+<font color="#444444">// specific entropy</font>
+<strong>function<font color="ff0000"> s_1</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dg <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> dg_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> ( equation_3_1 )
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> ( <strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">34</font><font color="4444FF">;</font> i++)
+        <font color="4444FF"><strong>{</strong></font>
+          dg +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>( <font color="#FF0000">7.1</font> - pi(p), I[i] )
+            * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">1.222</font>, J[i])<font color="4444FF">;</font>
+          dg_tau +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>( <font color="#FF0000">7.1</font> - pi(p), I[i])
+            * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">1.222</font>, J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <strong>return</strong> R * (tau(T) * dg_tau - dg)<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<font color="#444444">// specific_enthalpy</font>
+<strong>function<font color="ff0000"> h_1</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dg_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> ( equation_3_1 )
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">34</font><font color="4444FF">;</font> i++)
+        dg_tau +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>( <font color="#FF0000">7.1</font> - pi(p), I[i])
+          * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">1.222</font>, J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+      <strong>return</strong> R * T * tau(T) * dg_tau<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// specific_isobaric_heat_capacity</font>
+<strong>function<font color="ff0000"> cp_1</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dg_tt <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> ( equation_3_1 )
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> ( <strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">34</font><font color="4444FF">;</font> i++)
+        dg_tt +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>( <font color="#FF0000">7.1</font> - pi(p), I[i])
+          * J[i] * ( J[i] - <font color="#FF0000">1</font>) * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">1.222</font>, J[i] - <font color="#FF0000">2</font>)<font color="4444FF">;</font>
+
+      <strong>return</strong> -R * tau(T) * tau(T) * dg_tt<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// specific isochoric heat capacity</font>
+<strong>function<font color="ff0000"> cv_1</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dg_tt <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> dg_pi <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> dg_pt <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> dg_pp <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>function<font color="ff0000"> sqr</font><font color="2040a0">(x)</font> {</strong> <strong>return</strong> x * x<font color="4444FF">;</font><font color="4444FF"><strong>}</strong></font>
+  
+  <strong>with</strong> ( equation_3_1)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> ( <strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">34</font><font color="4444FF">;</font> i++)
+        <font color="4444FF"><strong>{</strong></font>
+          dg_tt +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>( <font color="#FF0000">7.1</font> - pi(p), I[i])
+            * J[i] * ( J[i] - <font color="#FF0000">1</font>) * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">1.222</font>, J[i] - <font color="#FF0000">2</font>)<font color="4444FF">;</font>
+          dg_pi +<font color="4444FF">=</font> -n[i] * I[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(<font color="#FF0000">7.1</font> - pi(p), I[i] - <font color="#FF0000">1</font>)
+            * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">1.222</font>, J[i])<font color="4444FF">;</font>
+          dg_pt +<font color="4444FF">=</font> -n[i] * I[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(<font color="#FF0000">7.1</font> - pi(p), I[i] - <font color="#FF0000">1</font>)
+            * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>( pi(p) - <font color="#FF0000">1.222</font>, J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+          dg_pp +<font color="4444FF">=</font> n[i] * I[i] * (I[i] - <font color="#FF0000">1</font>) * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(<font color="#FF0000">7.1</font> - pi(p), I[i] - <font color="#FF0000">2</font>)
+            * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">1.222</font>, J[i])<font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <strong>return</strong> R * (-sqr(tau(T)) * dg_tt + sqr(dg_pi - tau(T)*dg_pt)<font color="4444FF">/</font>dg_pp)<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<font color="#444444">//REGION 2</font>
+<font color="#444444">// Specific volume</font>
+<strong>function<font color="ff0000"> v_2</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> g0_pi<font color="4444FF">;</font>
+  <strong>var</strong> gr_pi <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  
+  <strong>with</strong> (equation_3_9)
+    <font color="4444FF"><strong>{</strong></font>
+      g0_pi <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">/</font>pi(p)<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>with</strong> (equation_3_10)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">43</font><font color="4444FF">;</font> i++)
+        gr_pi +<font color="4444FF">=</font> n[i] * I[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(pi(p), I[i] - <font color="#FF0000">1</font>)
+          *  <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">0.5</font>, J[i])<font color="4444FF">;</font>
+      <strong>return</strong> R * T * pi(p) * (g0_pi + gr_pi) <font color="4444FF">/</font> p<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">//Specific internal energy</font>
+<strong>function<font color="ff0000"> u_2</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> g0_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> gr_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> g0_pi<font color="4444FF">;</font>
+  <strong>var</strong> gr_pi <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> (equation_3_9)
+    <font color="4444FF"><strong>{</strong></font>
+      g0_pi <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">/</font>pi(p)<font color="4444FF">;</font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">9</font><font color="4444FF">;</font> i++)
+        g0_tau +<font color="4444FF">=</font> n[i] * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>with</strong> (equation_3_10)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">43</font><font color="4444FF">;</font> i++)
+        <font color="4444FF"><strong>{</strong></font>
+          gr_pi +<font color="4444FF">=</font> n[i] * I[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(pi(p), I[i] - <font color="#FF0000">1</font>)
+            *  <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">0.5</font>, J[i])<font color="4444FF">;</font>
+          gr_tau +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(pi(p), I[i])
+            * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">0.5</font>, J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <strong>return</strong> R * T * (tau(T)*(g0_tau+gr_tau) - pi(p)*(g0_pi+gr_pi)) <font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>     
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>function<font color="ff0000"> s_2</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> g0 <font color="4444FF">=</font> <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>log</strong></font>(equation_3_9.pi(p))<font color="4444FF">;</font>
+  <strong>var</strong> gr <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> g0_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> gr_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> (equation_3_9)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">9</font><font color="4444FF">;</font> i++)
+        <font color="4444FF"><strong>{</strong></font>
+          g0 +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i])<font color="4444FF">;</font>
+          g0_tau +<font color="4444FF">=</font> n[i] * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>with</strong> (equation_3_10)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">43</font><font color="4444FF">;</font> i++)
+        <font color="4444FF"><strong>{</strong></font>
+          gr +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(pi(p), I[i])
+            *  <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">0.5</font>, J[i])<font color="4444FF">;</font>
+          gr_tau +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(pi(p), I[i])
+            * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">0.5</font>, J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <strong>return</strong> R * (tau(T)*(g0_tau+gr_tau) - (g0 +gr)) <font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>     
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// specific enthalpy</font>
+<strong>function<font color="ff0000"> h_2</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> g0_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> gr_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> (equation_3_9)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">9</font><font color="4444FF">;</font> i++)
+        g0_tau +<font color="4444FF">=</font> n[i] * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>with</strong> (equation_3_10)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">43</font><font color="4444FF">;</font> i++)
+          gr_tau +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(pi(p), I[i])
+            * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">0.5</font>, J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+      <strong>return</strong> R * T * tau(T) * ( g0_tau + gr_tau ) <font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>       
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// specific isobaric heat capacity</font>
+<strong>function<font color="ff0000"> cp_2</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> g0_tt <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>var</strong> gr_tt <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> (equation_3_9)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">9</font><font color="4444FF">;</font> i++)
+        g0_tt +<font color="4444FF">=</font> n[i] * J[i] * (J[i] - <font color="#FF0000">1</font>) * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i] - <font color="#FF0000">2</font>)<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>with</strong> (equation_3_10)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">43</font><font color="4444FF">;</font> i++)
+        gr_tt +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(pi(p), I[i]) * J[i] * (J[i] - <font color="#FF0000">1</font>)
+          * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T) - <font color="#FF0000">0.5</font>, J[i] - <font color="#FF0000">2</font>)<font color="4444FF">;</font>
+      <strong>return</strong> -R * tau(T) * tau(T) * ( g0_tt + gr_tt ) <font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>       
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// REGION 2,3</font>
+
+<font color="#444444">// Auxiliary equation between Regions 2 and 3, Equ. 3.6 and Equ. 3.7</font>
+<strong>var</strong> n23 <font color="4444FF">=</font> [ <font color="#FF0000">0.34805185628969E+03</font>, -<font color="#FF0000">0.11671859879975E+01</font>,
+          <font color="#FF0000">0.10192970039326E-02</font>,  <font color="#FF0000">0.57254459862746E+03</font>, <font color="#FF0000">0.13918839778870E+02</font>]<font color="4444FF">;</font>
+
+<strong>function<font color="ff0000"> p_B</font><font color="2040a0">(T)</font> //<font color="ff0000"> equation</font><font color="ff0000"> 3</font>.6
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> n <font color="4444FF">=</font> n23<font color="4444FF">;</font>
+  <strong>return</strong> <font color="#FF0000">1e6</font> * (n[<font color="#FF0000">0</font>] + n[<font color="#FF0000">1</font>] * T + n[<font color="#FF0000">2</font>] * T * T )<font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>function<font color="ff0000"> T_B</font><font color="2040a0">(p)</font> //<font color="ff0000"> equation</font><font color="ff0000"> 3</font>.7
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> n <font color="4444FF">=</font> n23<font color="4444FF">;</font>
+  <strong>return</strong>  n[<font color="#FF0000">3</font>] + <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>sqrt</strong></font>((p<font color="4444FF">/</font><font color="#FF0000">1e6</font> - n[<font color="#FF0000">4</font>])<font color="4444FF">/</font>n[<font color="#FF0000">2</font>])<font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>  
+
+
+<font color="#444444">// REGION 3</font>
+<font color="#444444">// pressure</font>
+<strong>function<font color="ff0000"> p_3</font><font color="2040a0">(T, rho)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dh_d<font color="4444FF">;</font>
+  <strong>with</strong> (equation_3_21)
+    <font color="4444FF"><strong>{</strong></font>
+      dh_d <font color="4444FF">=</font> n[<font color="#FF0000">0</font>]<font color="4444FF">/</font>delta(rho)<font color="4444FF">;</font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">40</font><font color="4444FF">;</font> i++)
+        dh_d +<font color="4444FF">=</font> n[i] * I[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(delta(rho), I[i] - <font color="#FF0000">1</font>)
+          * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i])<font color="4444FF">;</font>
+      <strong>return</strong> rho * R * T * delta(rho) * dh_d<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// density must be calculated iteratively with Newton method</font>
+<strong>function<font color="ff0000"> rho_3</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> densold, diffdens<font color="4444FF">;</font>
+  <strong>var</strong> dc <font color="4444FF">=</font> <font color="#FF0000">322</font><font color="4444FF">;</font> <font color="#444444">// critical density in kg m^-33</font>
+  <strong>var</strong> Tc <font color="4444FF">=</font> <font color="#FF0000">647.096</font><font color="4444FF">;</font> <font color="#444444">//critical temperature in K</font>
+  densold <font color="4444FF">=</font> <font color="#FF0000">750</font><font color="4444FF">;</font> <font color="#444444">// a good downhill starting point</font>
+  <strong>for</strong> (<strong>var</strong> j <font color="4444FF">=</font> <font color="#FF0000">0</font><font color="4444FF">;</font> j <font color="4444FF">&lt;</font> <font color="#FF0000">1000</font><font color="4444FF">;</font> j++)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>var</strong> dh_d<font color="4444FF">;</font>
+      <strong>var</strong> dh_dd<font color="4444FF">;</font>
+      <strong>with</strong> (equation_3_21)
+        <font color="4444FF"><strong>{</strong></font>
+          dh_d <font color="4444FF">=</font> n[<font color="#FF0000">0</font>] <font color="4444FF">/</font> delta(densold)<font color="4444FF">;</font>
+          dh_dd <font color="4444FF">=</font> -n[<font color="#FF0000">0</font>] * dc <font color="4444FF">/</font> densold <font color="4444FF">/</font> densold<font color="4444FF">;</font>
+          <strong>for</strong> ( <strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">40</font><font color="4444FF">;</font> i ++)
+            <font color="4444FF"><strong>{</strong></font>
+              dh_d +<font color="4444FF">=</font> n[i] * I[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(delta(densold), I[i] - <font color="#FF0000">1</font>)
+                * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i])<font color="4444FF">;</font>
+              dh_dd +<font color="4444FF">=</font> n[i] * I[i] * (I[i]-<font color="#FF0000">1</font>) <font color="4444FF">/</font>dc
+                * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(delta(densold), I[i] - <font color="#FF0000">2</font>) * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i])<font color="4444FF">;</font>
+            <font color="4444FF"><strong>}</strong></font>
+        <font color="4444FF"><strong>}</strong></font>
+      <strong>var</strong> derivprho <font color="4444FF">=</font> R * T <font color="4444FF">/</font> dc * (<font color="#FF0000">2</font> * densold * dh_d
+                                    + densold * densold * dh_dd)<font color="4444FF">;</font>
+      <strong>var</strong> densnew <font color="4444FF">=</font> densold + (p - R * T * densold * densold <font color="4444FF">/</font> dc * dh_d )
+        <font color="4444FF">/</font> derivprho<font color="4444FF">;</font>
+      <strong>if</strong> (densnew <font color="4444FF">&lt;</font> <font color="#FF0000">0</font>) <font color="#444444">// sanity check</font>
+        densnew <font color="4444FF">=</font> <font color="#FF0000">700</font><font color="4444FF">;</font>
+      <strong>var</strong> diffdens <font color="4444FF">=</font> <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>abs</strong></font>(densnew-densold)<font color="4444FF">/</font>densnew<font color="4444FF">;</font>
+      <strong>if</strong> ( diffdens <font color="4444FF">&lt;</font> <font color="#FF0000">0.0000000005</font>)
+        <strong>return</strong> densnew<font color="4444FF">;</font>
+      densold <font color="4444FF">=</font> densnew<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <font color="a52a2a"><strong>alert</strong></font>(<font color="#008000">&quot;Accuracy problem: &quot;</font> + diffdens )<font color="4444FF">;</font>
+  <strong>return</strong> densold<font color="4444FF">;</font>
+  <strong>return</strong> -<font color="#FF0000">1</font> <font color="4444FF">;</font> <font color="#444444">// fault</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// specific internal energy</font>
+<strong>function<font color="ff0000"> u_3</font><font color="2040a0">(T, rho)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dh_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> (equation_3_21)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">40</font><font color="4444FF">;</font> i++)
+        dh_tau +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(delta(rho), I[i])
+          * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+      <strong>return</strong> R * T * tau(T) * dh_tau<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// specific entropy</font>
+<strong>function<font color="ff0000"> s_3</font><font color="2040a0">(T, rho)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dh<font color="4444FF">;</font>
+  <strong>var</strong> dh_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> (equation_3_21)
+    <font color="4444FF"><strong>{</strong></font>
+      dh <font color="4444FF">=</font> n[<font color="#FF0000">0</font>] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>log</strong></font>(delta(rho))<font color="4444FF">;</font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">40</font><font color="4444FF">;</font> i++)
+        <font color="4444FF"><strong>{</strong></font>
+          dh +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(delta(rho), I[i])
+            * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i])<font color="4444FF">;</font>
+          dh_tau +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(delta(rho), I[i])
+            * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <strong>return</strong> R * (tau(T) * dh_tau - dh)<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// specific enthalpy</font>
+<strong>function<font color="ff0000"> h_3</font><font color="2040a0">(T, rho)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dh_d<font color="4444FF">;</font>
+  <strong>var</strong> dh_tau <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> (equation_3_21)
+    <font color="4444FF"><strong>{</strong></font>
+      dh_d <font color="4444FF">=</font> n[<font color="#FF0000">0</font>]<font color="4444FF">/</font>delta(rho)<font color="4444FF">;</font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">40</font><font color="4444FF">;</font> i++)
+        <font color="4444FF"><strong>{</strong></font>
+          dh_d +<font color="4444FF">=</font> n[i] * I[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(delta(rho), I[i] - <font color="#FF0000">1</font>)
+            * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i])<font color="4444FF">;</font>
+          dh_tau +<font color="4444FF">=</font> n[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(delta(rho), I[i])
+            * J[i] * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i] - <font color="#FF0000">1</font>)<font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <strong>return</strong> R * T * (tau(T) * dh_tau + delta(rho) * dh_d)<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<font color="#444444">// specific isochoric heat capacity</font>
+<strong>function<font color="ff0000"> cv_3</font><font color="2040a0">(T, rho)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> dh_tt <font color="4444FF">=</font> <font color="#FF0000">0.0</font><font color="4444FF">;</font>
+  <strong>with</strong> (equation_3_21)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>for</strong> (<strong>var</strong> i <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font> i <font color="4444FF">&lt;</font> <font color="#FF0000">40</font><font color="4444FF">;</font> i++)
+        dh_tt +<font color="4444FF">=</font> n[i] *  <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(delta(rho), I[i] )
+          * J[i] * (J[i] - <font color="#FF0000">1</font> ) * <font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>pow</strong></font>(tau(T), J[i] - <font color="#FF0000">2</font>)<font color="4444FF">;</font>
+      <strong>return</strong> -R * tau(T) * tau(T) * dh_tt<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<font color="#444444">// REGION 4</font>
+<font color="#444444">// coefficients of equations 3.22 to 3.24</font>
+<strong>var</strong> r4_coeff <font color="4444FF">=</font>  [ <font color="#FF0000">0.11670521452767E+04</font>,-<font color="#FF0000">0.72421316703206E+06</font>,
+                -<font color="#FF0000">0.17073846940092E+02</font>,  <font color="#FF0000">0.12020824702470E+05</font>,
+                -<font color="#FF0000">0.32325550322333E+07</font>,  <font color="#FF0000">0.14915108613530E+02</font>,
+                -<font color="#FF0000">0.48232657361591E+04</font>,  <font color="#FF0000">0.40511340542057E+06</font>,
+                -<font color="#FF0000">0.23855557567849E+00</font>,  <font color="#FF0000">0.65017534844798E+03</font>]<font color="4444FF">;</font>
+
+<font color="#444444">// saturation pressure</font>
+<strong>function<font color="ff0000"> p_s</font><font color="2040a0">(T)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> T_reducing <font color="4444FF">=</font> <font color="#FF0000">1</font><font color="4444FF">;</font>
+  <strong>var</strong> p_reducing <font color="4444FF">=</font> <font color="#FF0000">1e6</font><font color="4444FF">;</font>
+  <strong>var</strong> n <font color="4444FF">=</font> r4_coeff<font color="4444FF">;</font>
+  <strong>var</strong> theta <font color="4444FF">=</font> T<font color="4444FF">/</font>T_reducing +  n[<font color="#FF0000">8</font>]<font color="4444FF">/</font>((T<font color="4444FF">/</font>T_reducing)-n[<font color="#FF0000">9</font>])<font color="4444FF">;</font>
+  <strong>var</strong> A <font color="4444FF">=</font> theta*theta + n[<font color="#FF0000">0</font>] * theta + n[<font color="#FF0000">1</font>]<font color="4444FF">;</font>
+  <strong>var</strong> B <font color="4444FF">=</font> n[<font color="#FF0000">2</font>] * theta*theta + n[<font color="#FF0000">3</font>] * theta + n[<font color="#FF0000">4</font>]<font color="4444FF">;</font>
+  <strong>var</strong> C <font color="4444FF">=</font> n[<font color="#FF0000">5</font>]*theta*theta + n[<font color="#FF0000">6</font>] * theta + n[<font color="#FF0000">7</font>]<font color="4444FF">;</font>
+  <strong>function<font color="ff0000"> quad</font><font color="2040a0">(x)</font> {</strong> <strong>return</strong> x*x*x*x<font color="4444FF">;</font> <font color="4444FF"><strong>}</strong></font>
+  <strong>return</strong> p_reducing*quad(<font color="#FF0000">2</font>*C<font color="4444FF">/</font>(-B+<font color="#2040a0"><strong>Math</strong></font>.<font color="a52a2a"><strong>sqrt</strong></font>(B*B-<font color="#FF0000">4</font>*A*C)))<font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<font color="#444444">// for region 3 parameter p_rho means density elsewere it means pressure</font>
+<strong>function<font color="ff0000"> Region</font><font color="2040a0">(v, rho, u, s, h, cp, cv, w)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>this</strong>.v <font color="4444FF">=</font>  v <font color="4444FF">|</font><font color="4444FF">|</font> function (T, p) <font color="4444FF"><strong>{</strong></font> <strong>return</strong> null<font color="4444FF">;</font> <font color="4444FF"><strong>}</strong></font> <font color="4444FF">;</font>
+  <strong>this</strong>.rho <font color="4444FF">=</font> rho <font color="4444FF">|</font><font color="4444FF">|</font> function (T, p) <font color="4444FF"><strong>{</strong></font> <strong>return</strong> null<font color="4444FF">;</font> <font color="4444FF"><strong>}</strong></font> <font color="4444FF">;</font>
+  <strong>this</strong>.u <font color="4444FF">=</font> u<font color="4444FF">;</font>
+  <strong>this</strong>.s <font color="4444FF">=</font> s<font color="4444FF">;</font>
+  <strong>this</strong>.h <font color="4444FF">=</font> h<font color="4444FF">;</font>
+  <strong>this</strong>.cp <font color="4444FF">=</font> cp <font color="4444FF">|</font><font color="4444FF">|</font> function (T, p_rho) <font color="4444FF"><strong>{</strong></font> <strong>return</strong> null <font color="4444FF"><strong>}</strong></font><font color="4444FF">;</font>
+  <strong>this</strong>.cv <font color="4444FF">=</font> cv <font color="4444FF">|</font><font color="4444FF">|</font> function (T, p_rho) <font color="4444FF"><strong>{</strong></font> <strong>return</strong> null <font color="4444FF"><strong>}</strong></font><font color="4444FF">;</font>
+  <strong>this</strong>.w <font color="4444FF">=</font> w <font color="4444FF">|</font><font color="4444FF">|</font> function (T, p_rho) <font color="4444FF"><strong>{</strong></font> <strong>return</strong> null <font color="4444FF"><strong>}</strong></font><font color="4444FF">;</font>
+  <strong>this</strong>.toHTML <font color="4444FF">=</font> function(T, p)
+  <font color="4444FF"><strong>{</strong></font>
+    <strong>var</strong> p_rho <font color="4444FF">=</font> p<font color="4444FF">;</font>
+    <strong>var</strong> r <font color="4444FF">=</font> <strong>new</strong> String()<font color="4444FF">;</font>
+    <strong>with</strong> (<strong>this</strong>)
+    <font color="4444FF"><strong>{</strong></font>
+      <strong>if</strong> ( v(T, p) <font color="4444FF">=</font><font color="4444FF">=</font> null) <font color="#444444">// region3</font>
+        <font color="4444FF"><strong>{</strong></font>
+          p_rho <font color="4444FF">=</font> rho(T, p)<font color="4444FF">;</font>
+          r <font color="4444FF">=</font> <font color="#008000">&quot;rho = &quot;</font> + p_rho + <font color="#008000">&quot; kg m&lt;sup&gt;-3&lt;/sup&gt;&lt;br&gt;\n&quot;</font><font color="4444FF">;</font>
+        <font color="4444FF"><strong>}</strong></font>
+      <strong>else</strong>
+        r <font color="4444FF">=</font>  <font color="#008000">&quot;v = &quot;</font> + v(T, p_rho) + <font color="#008000">&quot; m&lt;sup&gt;3&lt;/sup&gt; kg&lt;sup&gt;-1&lt;/sup&gt;&lt;br&gt;\n&quot;</font><font color="4444FF">;</font>
+      r +<font color="4444FF">=</font> <font color="#008000">&quot;h = &quot;</font> + h(T, p_rho)<font color="4444FF">/</font><font color="#FF0000">1000</font> + <font color="#008000">&quot; kJ kg&lt;sup&gt;-1&lt;/sup&gt;&lt;br&gt;\n&quot;</font>
+        + <font color="#008000">&quot;u = &quot;</font> + u(T, p_rho)<font color="4444FF">/</font><font color="#FF0000">1000</font> + <font color="#008000">&quot; kJ kg&lt;sup&gt;-1&lt;/sup&gt;&lt;br&gt;\n&quot;</font>
+        + <font color="#008000">&quot;s = &quot;</font> + s(T, p_rho)<font color="4444FF">/</font><font color="#FF0000">1000</font>
+        + <font color="#008000">&quot; kJ kg&lt;sup&gt;-1&lt;/sup&gt; K&lt;sup&gt;-1&lt;/sup&gt;&lt;br&gt;\n&quot;</font><font color="4444FF">;</font>
+      
+      <strong>if</strong> ( cp(T,p_rho) !<font color="4444FF">=</font> null)
+        r +<font color="4444FF">=</font> <font color="#008000">&quot;c&lt;sub&gt;p&lt;/sub&gt; = &quot;</font> + cp(T, p_rho)<font color="4444FF">/</font><font color="#FF0000">1000</font>
+          + <font color="#008000">&quot; kJ kg&lt;sup&gt;-1&lt;/sup&gt; K&lt;sup&gt;-1&lt;/sup&gt;&lt;br&gt;\n&quot;</font><font color="4444FF">;</font>
+      <strong>if</strong> ( cv(T,p_rho) !<font color="4444FF">=</font> null )
+        r +<font color="4444FF">=</font> <font color="#008000">&quot;c&lt;sub&gt;v&lt;/sub&gt; = &quot;</font> + cv(T, p_rho)<font color="4444FF">/</font><font color="#FF0000">1000</font>
+          + <font color="#008000">&quot; kJ kg&lt;sup&gt;-1&lt;/sup&gt; K&lt;sup&gt;-1&lt;/sup&gt;&lt;br&gt;\n&quot;</font><font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+    <strong>return</strong> r<font color="4444FF">;</font>
+  <font color="4444FF"><strong>}</strong></font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>var</strong> region <font color="4444FF">=</font> <strong>new</strong> <font color="#2040a0"><strong>Array</strong></font>()<font color="4444FF">;</font>
+region[<font color="#FF0000">1</font>] <font color="4444FF">=</font> <strong>new</strong> Region(v_1, null, u_1, s_1, h_1, cp_1)<font color="4444FF">;</font>
+region[<font color="#FF0000">2</font>] <font color="4444FF">=</font> <strong>new</strong> Region(v_2, null, u_2, s_2, h_2, cp_2)<font color="4444FF">;</font>
+region[<font color="#FF0000">3</font>] <font color="4444FF">=</font> <strong>new</strong> Region(null, rho_3, u_3, s_3, h_3, null, cv_3)<font color="4444FF">;</font>
+
+<font color="#444444">// returns region number for a given temperature and pressure</font>
+<strong>function<font color="ff0000"> which_region</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+ <strong>if</strong> (<font color="#FF0000">273.15</font> <font color="4444FF">&lt;</font><font color="4444FF">=</font> T <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> T <font color="4444FF">&lt;</font><font color="4444FF">=</font> <font color="#FF0000">623.15</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> p_s(T) <font color="4444FF">&lt;</font><font color="4444FF">=</font> p <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> p <font color="4444FF">&lt;</font><font color="4444FF">=</font> <font color="#FF0000">100e6</font>)
+   <strong>return</strong> <font color="#FF0000">1</font><font color="4444FF">;</font>
+ <strong>else</strong>
+   <strong>if</strong> ( (<font color="#FF0000">273.15</font> <font color="4444FF">&lt;</font><font color="4444FF">=</font> T <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font>  T <font color="4444FF">&lt;</font><font color="4444FF">=</font> <font color="#FF0000">623.15</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font>  <font color="#FF0000">0</font> <font color="4444FF">&lt;</font> p <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> p <font color="4444FF">&lt;</font><font color="4444FF">=</font> p_s(T))
+        <font color="4444FF">|</font><font color="4444FF">|</font> (<font color="#FF0000">623.15</font> <font color="4444FF">&lt;</font> T  <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> T <font color="4444FF">&lt;</font><font color="4444FF">=</font> <font color="#FF0000">863.15</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="#FF0000">0</font> <font color="4444FF">&lt;</font> p <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> p <font color="4444FF">&lt;</font><font color="4444FF">=</font> p_B(T))
+        <font color="4444FF">|</font><font color="4444FF">|</font> (<font color="#FF0000">863.15</font> <font color="4444FF">&lt;</font> T <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> T <font color="4444FF">&lt;</font><font color="4444FF">=</font> <font color="#FF0000">1073.15</font> <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> <font color="#FF0000">0</font> <font color="4444FF">&lt;</font> p <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> p <font color="4444FF">&lt;</font><font color="4444FF">=</font> <font color="#FF0000">100e6</font>) )
+     <strong>return</strong> <font color="#FF0000">2</font><font color="4444FF">;</font>
+   <strong>else</strong>
+     <strong>if</strong> ( <font color="#FF0000">623.5</font> <font color="4444FF">&lt;</font><font color="4444FF">=</font> T <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> T <font color="4444FF">&lt;</font><font color="4444FF">=</font> T_B(p) <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> p_B(T) <font color="4444FF">&lt;</font><font color="4444FF">=</font> p <font color="4444FF">&amp;</font><font color="4444FF">&amp;</font> p <font color="4444FF">&lt;</font><font color="4444FF">=</font> <font color="#FF0000">100e6</font>)
+       <strong>return</strong> <font color="#FF0000">3</font><font color="4444FF">;</font>
+
+
+ <strong>return</strong> <font color="#FF0000">0</font><font color="4444FF">;</font> <font color="#444444">// out of range  </font>
+<font color="4444FF"><strong>}</strong></font>
+
+
+<font color="#444444">//User interface functions</font>
+
+<font color="#444444">// New window display</font>
+<strong>function<font color="ff0000"> display_message</font><font color="2040a0">(title, html_text)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> w <font color="4444FF">=</font> <font color="#2040a0"><strong>window</strong></font>.<font color="a52a2a"><strong>open</strong></font>(<font color="#008000">&quot;&quot;</font>, null,  <font color="#008000">&quot;width=300,height=300,&quot;</font>
+                      + <font color="#008000">&quot;menubar=yes,scrollbars=yes,resizable=yes&quot;</font>)<font color="4444FF">;</font>
+  <strong>var</strong> d <font color="4444FF">=</font> w.<font color="#2040a0"><strong>document</strong></font>.<font color="a52a2a"><strong>open</strong></font>(<font color="#008000">&quot;text/html&quot;</font>)<font color="4444FF">;</font>
+  d.<font color="a52a2a"><strong>writeln</strong></font>(<font color="#008000">&quot;&lt;html&gt;&lt;head&gt;\n&lt;title&gt;&quot;</font> + <font color="#2040a0"><strong>title</strong></font> + <font color="#008000">&quot;&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;&quot;</font>)<font color="4444FF">;</font>
+  d.<font color="a52a2a"><strong>writeln</strong></font>(<font color="#008000">&quot;&lt;h1&gt;&quot;</font> + <font color="#2040a0"><strong>title</strong></font> + <font color="#008000">&quot;&lt;/h1&gt;&quot;</font>)<font color="4444FF">;</font>
+  d.<font color="a52a2a"><strong>writeln</strong></font>(html_text)<font color="4444FF">;</font>
+  d.<font color="a52a2a"><strong>writeln</strong></font>(<font color="#008000">&quot;&lt;/body&gt;\n&lt;/html&gt;&quot;</font>)<font color="4444FF">;</font>
+  d.<font color="a52a2a"><strong>close</strong></font>()<font color="4444FF">;</font>
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>function<font color="ff0000"> show_properties</font><font color="2040a0">(T, p)</font>
+</strong><font color="4444FF"><strong>{</strong></font>
+  <strong>var</strong> p_rho<font color="4444FF">;</font>
+  <strong>var</strong> html_text<font color="4444FF">;</font>
+  <strong>var</strong> r <font color="4444FF">=</font> which_region(T, p)<font color="4444FF">;</font>
+  
+  <strong>if</strong> (r)
+    <font color="4444FF"><strong>{</strong></font>
+      html_text <font color="4444FF">=</font> region[r].toHTML(T, p)<font color="4444FF">;</font>
+      display_message(<font color="#008000">&quot;Properties for Region &quot;</font> + r, html_text)<font color="4444FF">;</font>
+    <font color="4444FF"><strong>}</strong></font>
+  <strong>else</strong>
+    <font color="a52a2a"><strong>alert</strong></font>(<font color="#008000">&quot;Out of range!\n&quot;</font> + <font color="#008000">&quot;T = &quot;</font> + T + <font color="#008000">&quot; K&quot;</font>)
+<font color="4444FF"><strong>}</strong></font>
+
+<strong>var</strong> email<font color="4444FF">=</font> <font color="4444FF"><strong>{</strong></font> username: <font color="#008000">&quot;leon.kos&quot;</font>,  domain : <font color="#008000">&quot;lecad.uni-lj.si&quot;</font> <font color="4444FF"><strong>}</strong></font>
+
+
+<font color="4444FF">&lt;</font><font color="4444FF">/</font>script<font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font><font color="4444FF">/</font>head<font color="4444FF">&gt;</font>
+
+<font color="4444FF">&lt;</font>body<font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font>h1<font color="4444FF">&gt;</font>IAPWS Industrial Formulation <font color="#FF0000">1997</font><font color="4444FF">&lt;</font><font color="4444FF">/</font>h1<font color="4444FF">&gt;</font>
+
+For background information about the IAPWS Industrial
+Formulation <font color="#FF0000">1997</font> <strong>for</strong> the Thermodynamic Properties of
+Water and Steam (IAPWS-IF97) and references see
+<font color="4444FF">&lt;</font>a <font color="#2040a0"><strong>href</strong></font><font color="4444FF">=</font>http:<font color="#444444">//www.iapws.org/relguide/IF97.pdf&gt;IAPWS-IF97 release &lt;/a&gt;. </font>
+
+<font color="4444FF">&lt;</font>p<font color="4444FF">&gt;</font>
+The IAPWS-IF97 divides the thermodynamic surface
+into five regions (see figure below): 
+
+<font color="4444FF">&lt;</font>ul<font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font>li<font color="4444FF">&gt;</font> region <font color="#FF0000">1</font> <strong>for</strong> the liquid state from low to high  pressures, 
+<font color="4444FF">&lt;</font>li<font color="4444FF">&gt;</font> region <font color="#FF0000">2</font> <strong>for</strong> the vapor and ideal gas state, 
+<font color="4444FF">&lt;</font>li<font color="4444FF">&gt;</font> region <font color="#FF0000">3</font> <strong>for</strong> the thermodynamic state around the critical point, 
+<font color="4444FF">&lt;</font>li<font color="4444FF">&gt;</font> region <font color="#FF0000">4</font> <strong>for</strong> the saturation curve (vapor-liquid equilibrium), 
+<font color="4444FF">&lt;</font>li<font color="4444FF">&gt;</font> region <font color="#FF0000">5</font> <strong>for</strong> high temperatures above <font color="#FF0000">1073.15</font> K (<font color="#FF0000">800</font> °C) and
+                pressures up to <font color="#FF0000">10</font> MPa (<font color="#FF0000">100</font> bar). 
+<font color="4444FF">&lt;</font><font color="4444FF">/</font>ul<font color="4444FF">&gt;</font>
+
+<font color="4444FF">&lt;</font>img <font color="#2040a0"><strong>src</strong></font><font color="4444FF">=</font>regions.png alt<font color="4444FF">=</font><font color="#008000">&quot;IAPWS 97 regions&quot;</font><font color="4444FF">&gt;</font>
+
+<font color="4444FF">&lt;</font>p<font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font>h2<font color="4444FF">&gt;</font> Properties of Water and Steam calculator<font color="4444FF">&lt;</font><font color="4444FF">/</font>h3<font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font><font color="#2040a0"><strong>form</strong></font><font color="4444FF">&gt;</font>
+    Temperature : 
+    <font color="4444FF">&lt;</font>input <font color="#2040a0"><strong>type</strong></font><font color="4444FF">=</font><font color="#2040a0"><strong>text</strong></font> <font color="#2040a0"><strong>name</strong></font><font color="4444FF">=</font>T size<font color="4444FF">=</font><font color="#FF0000">10</font> <font color="#2040a0"><strong>value</strong></font><font color="4444FF">=</font><font color="#FF0000">300</font><font color="4444FF">&gt;</font>
+    <font color="4444FF">&lt;</font><font color="#2040a0"><strong>select</strong></font> <font color="#2040a0"><strong>name</strong></font><font color="4444FF">=</font>T_unit<font color="4444FF">&gt;</font>
+      <font color="4444FF">&lt;</font>option <font color="#2040a0"><strong>value</strong></font><font color="4444FF">=</font><font color="#FF0000">0</font><font color="4444FF">&gt;</font> K
+      <font color="4444FF">&lt;</font>option <font color="#2040a0"><strong>value</strong></font><font color="4444FF">=</font><font color="#FF0000">273.15</font><font color="4444FF">&gt;</font> <font color="4444FF">&amp;</font>#<font color="#FF0000">176</font><font color="4444FF">;</font>C
+    <font color="4444FF">&lt;</font><font color="4444FF">/</font><font color="#2040a0"><strong>select</strong></font><font color="4444FF">&gt;</font><font color="4444FF">&lt;</font>br<font color="4444FF">&gt;</font>
+    Pressure : 
+    <font color="4444FF">&lt;</font>input <font color="#2040a0"><strong>type</strong></font><font color="4444FF">=</font><font color="#2040a0"><strong>text</strong></font> <font color="#2040a0"><strong>name</strong></font><font color="4444FF">=</font>p size<font color="4444FF">=</font><font color="#FF0000">10</font> <font color="#2040a0"><strong>value</strong></font><font color="4444FF">=</font><font color="#FF0000">3</font><font color="4444FF">&gt;</font> 
+    <font color="4444FF">&lt;</font><font color="#2040a0"><strong>select</strong></font> <font color="#2040a0"><strong>name</strong></font><font color="4444FF">=</font>p_unit<font color="4444FF">&gt;</font>
+      <font color="4444FF">&lt;</font>option <font color="#2040a0"><strong>value</strong></font><font color="4444FF">=</font><font color="#FF0000">1e6</font><font color="4444FF">&gt;</font> MPa
+      <font color="4444FF">&lt;</font>option <font color="#2040a0"><strong>value</strong></font><font color="4444FF">=</font><font color="#FF0000">1e5</font><font color="4444FF">&gt;</font> bar
+      <font color="4444FF">&lt;</font>option <font color="#2040a0"><strong>value</strong></font><font color="4444FF">=</font><font color="#FF0000">1</font><font color="4444FF">&gt;</font> Pa
+    <font color="4444FF">&lt;</font><font color="4444FF">/</font><font color="#2040a0"><strong>select</strong></font><font color="4444FF">&gt;</font>
+
+  <font color="4444FF">&lt;</font>input <font color="#2040a0"><strong>type</strong></font><font color="4444FF">=</font><font color="#2040a0"><strong>button</strong></font> <font color="#2040a0"><strong>value</strong></font><font color="4444FF">=</font><font color="#008000">&quot;Calculate properties&quot;</font>
+     <strong>onClick</strong><font color="4444FF">=</font><font color="#008000">&quot;show_properties((T.value - 0) + (T_unit.options[T_unit.selectedIndex].value - 0), p.value * p_unit.options[p_unit.selectedIndex].value);&quot;</font><font color="4444FF">&gt;</font>
+    <font color="4444FF">&lt;</font><font color="4444FF">/</font><font color="#2040a0"><strong>form</strong></font><font color="4444FF">&gt;</font>
+
+    <font color="4444FF">&lt;</font>h2<font color="4444FF">&gt;</font> Program <font color="#2040a0"><strong>description</strong></font><font color="4444FF">&lt;</font><font color="4444FF">/</font>h2<font color="4444FF">&gt;</font>
+
+Program <strong>in</strong> Javascript is designed to provide a fremework <strong>for</strong> further
+development. Only properties from basic equations are covered <strong>for</strong> regions
+<font color="#FF0000">1</font>, <font color="#FF0000">2</font> and <font color="#FF0000">3</font>. Backward equations are not implemented. For Region <font color="#FF0000">3</font> density
+must be calculated from pressure <strong>with</strong> Newton iteration. All regions give
+correct verification results.
+
+    <font color="4444FF">&lt;</font>p<font color="4444FF">&gt;</font>It seems that not all users realise the kind of software which is
+described here. When you calculate properties the program runs on your
+machine! Please use <font color="4444FF">&lt;</font>kbd<font color="4444FF">&gt;</font>view Page source<font color="4444FF">&lt;</font><font color="4444FF">/</font>kbd<font color="4444FF">&gt;</font> to review the source code
+or <font color="a52a2a"><strong>click</strong></font> <font color="4444FF">&lt;</font>a <font color="#2040a0"><strong>href</strong></font><font color="4444FF">=</font>listing.html<font color="4444FF">&gt;</font><strong>this</strong> <font color="#2040a0"><strong>link</strong></font><font color="4444FF">&lt;</font><font color="4444FF">/</font>a<font color="4444FF">&gt;</font> <strong>for</strong> fancy listing. This is
+NOT external program calculator! That<font color="#008000">'s why it is licensed by the following</font>
+licence. <font color="4444FF">&lt;</font><font color="4444FF">/</font>p<font color="4444FF">&gt;</font>
+    
+<font color="4444FF">&lt;</font>h3<font color="4444FF">&gt;</font> Licence <font color="4444FF">&lt;</font><font color="4444FF">/</font>h3<font color="4444FF">&gt;</font>
+Copyright  <font color="#FF0000">2001</font> Leon Kos, University of Ljubljana
+<font color="4444FF">&lt;</font>p<font color="4444FF">&gt;</font>
+    This program is free software<font color="4444FF">;</font> you can redistribute it and<font color="4444FF">/</font>or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation<font color="4444FF">;</font> either version <font color="#FF0000">2</font> of the License , or
+    (at your option) any later version.
+<font color="4444FF">&lt;</font>p<font color="4444FF">&gt;</font>
+    This program is distributed <strong>in</strong> the hope that it will be useful,
+    but WITHOUT ANY WARRANTY<font color="4444FF">;</font> without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License <strong>for</strong> more details.
+<font color="4444FF">&lt;</font>p<font color="4444FF">&gt;</font>
+    The software is released under GNU General Public License.
+
+<font color="4444FF">&lt;</font>address<font color="4444FF">&gt;</font>
+    <font color="4444FF">&lt;</font>script language<font color="4444FF">=</font>javascript<font color="4444FF">&gt;</font> 
+      <font color="#2040a0"><strong>document</strong></font>.<font color="a52a2a"><strong>writeln</strong></font>(<font color="#008000">&quot;&lt;a href=mailto:&quot;</font> 
+	+ email.username + <font color="#008000">&quot;@&quot;</font> + email.domain + <font color="#008000">&quot;&gt;&quot;</font>
+	+ <font color="#008000">&quot; Leon Kos &lt;/a&gt; &lt;br&gt; \n&quot;</font>)<font color="4444FF">;</font>
+    <font color="4444FF">&lt;</font><font color="4444FF">/</font>script<font color="4444FF">&gt;</font>  
+    University of Ljubljana, Slovenia 
+<font color="4444FF">&lt;</font><font color="4444FF">/</font>address<font color="4444FF">&gt;</font>
+
+<font color="4444FF">&lt;</font>hr<font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font>!-- hhmts start --<font color="4444FF">&gt;</font>Last modified: Mon Mar <font color="#FF0000">14</font> <font color="#FF0000">14</font>:<font color="#FF0000">26</font>:<font color="#FF0000">22</font> CET <font color="#FF0000">2005</font> <font color="4444FF">&lt;</font>!-- hhmts end --<font color="4444FF">&gt;</font>
+<font color="4444FF">&lt;</font><font color="4444FF">/</font>body<font color="4444FF">&gt;</font> <font color="4444FF">&lt;</font><font color="4444FF">/</font>html<font color="4444FF">&gt;</font>
+
+</pre>
+<hr>
+syntax highlighted by <a href="http://www.palfrader.org/code2html">Code2HTML</a>, v. 0.9
+</body>
+</html>
