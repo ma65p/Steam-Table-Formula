@@ -35,12 +35,12 @@ I = [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 7, 7, 7,
   8, 8, 9, 10, 10, 10, 16, 16, 18, 20, 20, 20, 21, 22, 23, 24, 24, 24 ]
   
 def Region_2(temp,press)
-  i = 0
-  pi = press/16.53
-  tau = 1386.0 / temp
+  temp, press = temp.to_f, press.to_f
+  pi = press/1.0
+  tau = 540 / temp
   gamma_o = Math.log(pi)
-  gamma_o_pi = 1/pi
-  gamma_o_pi_pi = -1/pi**2
+  gamma_o_pi = 1.0/pi
+  gamma_o_pi_pi = -1.0/pi**2.0
   gamma_o_tau=0
   gamma_o_tau_tau=0
   gamma_o_pi_tau = 0
@@ -50,24 +50,27 @@ def Region_2(temp,press)
     gamma_o_tau_tau += No[i] * Jo[i] * (Jo[i]-1) * tau**(Jo[i]-2)
   end
   gamma_r,gamma_r_pi, gamma_r_pi_pi,gamma_r_tau,gamma_r_tau_tau,gamma_r_pi_tau = 0,0,0,0,0,0
-  for i in 0..I.length-1
+  for i in 0..42
     gamma_r += N[i] * pi ** I[i] * (tau-0.5)**J[i]
-    gamma_r_pi += N[i] * I[i] * pi ** (I[i]-1) * (tau-0.5)**J[i]
-    gamma_r_pi_pi += N[i] * I[i] * (I[i]-1) * pi ** (I[i]-2) * (tau-0.5)**J[i]
+    gamma_r_pi += N[i] * I[i] * pi**(I[i]-1) * (tau-0.5)**J[i]
+    gamma_r_pi_pi += N[i] * I[i] * (I[i]-1) * pi**(I[i]-2)*(tau-0.5)**J[i]
     gamma_r_tau += N[i] * pi ** I[i] * J[i] * (tau-0.5)**(J[i]-1)
-    gamma_r_tau_tau += N[i] * pi ** I[i] * J[i] * (J[i]-1) * (tau-0.5)**(J[i]-2)
-    gamma_r_pi_tau += N[i] * I[i] * pi ** (I[i]-1) * J[i] * (tau-0.5)**(J[i]-1)
+    gamma_r_tau_tau += N[i] * pi**I[i]*J[i]*(J[i]-1) * (tau-0.5)**(J[i]-2)
+    gamma_r_pi_tau += N[i] * I[i] * pi**(I[i]-1) * J[i] * (tau-0.5)**(J[i]-1)
   end
+
   
   v = pi*(gamma_o_pi+gamma_r_pi)*R*temp/press
   u = R*temp*( tau* (gamma_o_tau-gamma_r_tau) - pi*(gamma_o_pi+gamma_r_pi))
   s = R*tau*(gamma_o_tau + gamma_r_tau) - R*(gamma_o +gamma_r)
   h = tau*(gamma_o_tau + gamma_r_tau)*R*temp
-  cp= -tau**2*(gamma_o_tau_tau + gamma_r_tau_tau)
+  cp= -tau**2*(gamma_o_tau_tau + gamma_r_tau_tau)*R
   cv= -tau**2*(gamma_o_tau_tau + gamma_r_tau_tau)*R - R*((1+pi*gamma_r_pi-tau*pi*gamma_r_pi_tau)**2/(1-pi**2*gamma_r_pi_pi))
-  w = (R*temp*(1+2*pi*gamma_r_pi+pi**2*gamma_r_pi**2)/((1-pi**2*gamma_r_pi_pi)+(1+pi*gamma_r_pi-tau*pi*gamma_r_pi_tau)**2/tau**2*(gamma_o_tau_tau+gamma_r_tau_tau)))
-  
-  
+  w_num = (1+2*pi*gamma_r_pi+pi**2*gamma_r_pi**2)
+  w_den = (1-pi**2*gamma_r_pi_pi)+((1+pi*gamma_r_pi-tau*pi*gamma_r_pi_tau)**2)/(tau**2*(gamma_o_tau_tau + gamma_r_tau_tau))
+  w = Math.sqrt(R*temp*w_num/w_den)
+  # w calculation is still wrong for some reason. 
+  # Cv is probably wrong too
   region_2 = [v,u,s,h,cp,cv,w]
   names = ["v","u","s","h","cp","cv","w"] 
   for j in 0..region_2.length-1
